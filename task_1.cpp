@@ -8,11 +8,11 @@ class StimulRead
 public:
 	StimulRead()
 	{
-		id_page_.resize(100000);
-		page_id_.resize(1000);
+		reader_pages_.resize(100000);
+		page_readers_.resize(1000);
 	}
 
-	void IncomingRequests(istream& in)
+	void IncomingRequests(istream& in, ostream& out)
 	{
 		int num, idUser, page;
 		in >> num;
@@ -24,29 +24,29 @@ public:
 			{
 				in >> idUser;
 				in >> page;
-				for (int j = id_page_[idUser]; j < page; ++j)
+				for (int j = reader_pages_[idUser]; j < page; ++j)
 				{
-					++page_id_[j];
+					++page_readers_[j];
 				}
-				id_page_[idUser] = page;
+				reader_pages_[idUser] = page;
 			}
 			else
 			{
 				in >> idUser;
-				page = id_page_[idUser];
+				page = reader_pages_[idUser];
 				if (page == 0)
 				{
-					cout << 0 << endl;
+					out << 0 << endl;
 				}
-				else if (page_id_[0] == 1)
+				else if (page_readers_[0] == 1)
 				{
-					cout << 1 << endl;
+					out << 1 << endl;
 				}
 				else
 				{
-					cout << (float)(page_id_[0] - 1 - (page_id_[page - 1] - 1)) /
-								 (float)(page_id_[0] - 1)
-							  << endl;
+					out << setprecision(6)
+						<< (float)(page_readers_[0] - 1 - (page_readers_[page - 1] - 1)) / (page_readers_[0] - 1)
+						<< endl;
 				}
 			}
 		}
@@ -54,13 +54,13 @@ public:
 
 
 private:
-	vector<int> id_page_;
-	vector<int> page_id_;
+	vector<int> reader_pages_;
+	vector<int> page_readers_;
 };
 
 
 int main()
 {
 	StimulRead stimulRead;
-	stimulRead.IncomingRequests(std::cin);
+	stimulRead.IncomingRequests(std::cin, std::cout);
 }
