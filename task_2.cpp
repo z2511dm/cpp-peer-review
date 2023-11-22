@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <string_view>
 #include <utility>
 #include <vector>
 #include <cassert>
@@ -103,6 +104,15 @@ void tests()
 		assert(!(testDomain1 < testDomain2));
 	}
 
+	{
+		istringstream in1("gdz.ru\n"
+						  "maps.me\n");
+		const std::vector<Domain> forbidden_domains = ReadDomains(in1, 4);
+		const std::vector<Domain> vec1 = {Domain("gdz.ru"), Domain("maps.me")};
+
+		assert(forbidden_domains[0] == Domain("gdz.ru"));
+		assert(forbidden_domains[1] == Domain("maps.me"));
+	}
 
 	{
 		istringstream in1("gdz.ru\n"
@@ -112,21 +122,13 @@ void tests()
 		const std::vector<Domain> forbidden_domains = ReadDomains(in1, 4);
 		DomainChecker checker(forbidden_domains.begin(), forbidden_domains.end());
 
-		istringstream in2("gdz.ru\n"
-						  "gdz.com\n"
-						  "m.maps.me\n"
-						  "alg.m.gdz.ru\n"
-						  "maps.com\n"
-						  "maps.ru\n"
-						  "gdz.ua ");
-		const std::vector<Domain> test_domains = ReadDomains(in2, 7);
-
 		assert(checker.IsForbidden(Domain("gdz.ru")));
 		assert(checker.IsForbidden(Domain("maps.me")));
 		assert(checker.IsForbidden(Domain("as.fg.db.m.gdz.ru")));
+		assert(checker.IsForbidden(Domain("maps.com")));
 		assert(!checker.IsForbidden(Domain("ttt.ru")));
 	}
-
+	cout << "Tests completed" << endl;
 }
 
 int main()
