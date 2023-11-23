@@ -108,7 +108,6 @@ void tests()
 		istringstream in1("gdz.ru\n"
 						  "maps.me\n");
 		const std::vector<Domain> forbidden_domains = ReadDomains(in1, 4);
-		const std::vector<Domain> vec1 = {Domain("gdz.ru"), Domain("maps.me")};
 
 		assert(forbidden_domains[0] == Domain("gdz.ru"));
 		assert(forbidden_domains[1] == Domain("maps.me"));
