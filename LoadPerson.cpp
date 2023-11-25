@@ -30,12 +30,12 @@ struct ArgLoadPerson
 	}
 	ArgLoadPerson& SetMaxAge(int val)
 	{
-		name_filter = val;
+		max_age = val;
 		return *this;
 	}
 	ArgLoadPerson& SetNameFilter(string_view val)
 	{
-		db_connection_timeout = val;
+		name_filter = val;
 		return *this;
 	}
 };
